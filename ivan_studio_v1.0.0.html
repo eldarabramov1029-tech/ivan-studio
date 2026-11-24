@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>IVAN STUDIO</title>
+<style>
+:root{--bg:#090b12;--side:#0d111c;--panel:#131927;--panel2:#0e1421;--line:#252e42;--text:#f2f4ff;--muted:#929db5;--accent:#897cff;--cyan:#52d5e4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,Arial,sans-serif}
+button,textarea,select,input{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:76px 1fr}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--side);border-right:1px solid var(--line);display:flex;align-items:center;flex-direction:column;padding:15px 10px;gap:12px}
+.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:grid;place-items:center;color:#080b12;font-weight:900;font-size:17px;box-shadow:0 8px 28px #7567ff45;margin-bottom:18px}
+.nav{width:48px;height:48px;border:1px solid transparent;border-radius:15px;background:transparent;color:#8792aa;font-size:19px;display:grid;place-items:center;position:relative}
+.nav:hover,.nav.active{background:#201f3a;color:#c6bdff;border-color:#39345f}.nav.active:before{content:"";position:absolute;left:-11px;height:24px;width:3px;border-radius:0 4px 4px 0;background:var(--accent)}
+.nav[title]:hover:after{content:attr(title);position:absolute;left:58px;white-space:nowrap;background:#20283a;color:white;padding:6px 10px;border-radius:8px;z-index:5;font-size:12px}
+.bottom{margin-top:auto}
+main{min-width:0;padding:26px clamp(16px,3vw,42px) 45px;max-width:1500px;width:100%;margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;gap:15px}
+.brandline{display:flex;align-items:center;gap:10px}.brandline strong{letter-spacing:.13em;font-size:13px}.brandline span{color:var(--muted);font-size:12px}
+.pill{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:5px 10px;color:#c7cde0}
+.page{display:none}.page.active{display:block}
+.eyebrow{color:#aaa2ff;text-transform:uppercase;letter-spacing:.16em;font-size:10px;font-weight:750}
+h1{font-size:clamp(28px,4vw,42px);line-height:1.12;letter-spacing:-.04em;margin:8px 0 10px}
+h2{font-size:17px;margin:0 0 14px}h3{font-size:14px;margin:0 0 7px}
+.muted{color:var(--muted)}.small{font-size:12px}
+.hero{padding:clamp(22px,4vw,38px);border:1px solid #353257;border-radius:24px;background:radial-gradient(ellipse at 90% 0%,#4d438a55,transparent 45%),linear-gradient(120deg,#171a2b,#111725);position:relative;overflow:hidden}
+.hero p{max-width:600px;color:#aeb8d0;margin:0 0 23px}.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:1px solid var(--line);background:#1b2435;color:var(--text);padding:10px 15px;border-radius:11px;font-weight:650}
+.btn:hover{filter:brightness(1.16)}.btn.primary{background:linear-gradient(135deg,#9485ff,#5c9fe9);border:0;color:#080a13}
+.btn.ghost{background:transparent}.btn:disabled{opacity:.45;cursor:not-allowed}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:17px}
+.card,.panel{border:1px solid var(--line);background:linear-gradient(180deg,#151c2b,#101622);border-radius:17px;padding:18px}
+.card .ico{width:36px;height:36px;border-radius:11px;background:#242142;color:#c7bdff;display:grid;place-items:center;font-size:17px;margin-bottom:13px}
+.card p{font-size:12px;color:var(--muted);margin:0}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:27px 0 12px}
+.editor-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.8fr);gap:15px}
+textarea{width:100%;min-height:330px;resize:vertical;background:#090e19;border:1px solid #2a344a;border-radius:13px;color:var(--text);padding:15px;outline:none;font:13px/1.75 ui-monospace,Consolas,monospace}
+textarea:focus,select:focus,input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #897cff20}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+.field{margin-bottom:15px}.field label{display:block;color:#c4cce0;font-size:12px;margin-bottom:6px}
+select{width:100%;background:#0b1120;color:var(--text);border:1px solid var(--line);padding:10px;border-radius:10px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{padding:10px;border:1px solid var(--line);background:#0c1220;border-radius:11px}.stat b{display:block;font-size:18px}.stat span{font-size:10px;color:var(--muted)}
+.status{margin-top:12px;border:1px solid var(--line);background:#0b1120;padding:10px 12px;border-radius:10px;color:#bac6df;font-size:12px}
+.output{white-space:pre-wrap;overflow-wrap:anywhere;min-height:95px;background:#0b1120;border:1px solid var(--line);border-radius:11px;padding:12px;font:12px/1.6 ui-monospace,Consolas,monospace;color:#dce4f7}
+.tags{display:flex;flex-wrap:wrap;gap:6px}.tag{font:11px ui-monospace,monospace;background:#242142;color:#c9c2ff;border:1px solid #3b3565;border-radius:7px;padding:4px 7px}
+.history-list{display:grid;gap:9px}.history-item{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);background:#101725;padding:12px;border-radius:12px}
+.history-item strong{font-size:13px}.history-item small{display:block;color:var(--muted);font-size:11px}
+.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #303a50;border-radius:14px}
+.notice{border:1px solid #554c2d;background:#262216;color:#e6d8a6;border-radius:12px;padding:12px;font-size:12px;margin-top:14px}
+footer{margin-top:28px;color:#68738a;font-size:11px;text-align:center}
+@media(max-width:850px){.editor-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.app{grid-template-columns:58px 1fr}.sidebar{padding:12px 5px}.nav{width:43px;height:43px}.logo{width:40px;height:40px}main{padding:17px 12px 30px}.cards{grid-template-columns:1fr}.topbar{margin-bottom:20px}.pill{display:none}.hero{border-radius:18px}textarea{min-height:260px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+ <div class="logo">IV</div>
+ <button class="nav active" data-page="home" title="Главная" aria-label="Главная">⌂</button>
+ <button class="nav" data-page="voice" title="Озвучка" aria-label="Озвучка">♫</button>
+ <button class="nav" data-page="history" title="История" aria-label="История">◷</button>
+ <button class="nav" data-page="settings" title="Настройки" aria-label="Настройки">⚙</button>
+ <button class="nav bottom" data-page="help" title="Помощь" aria-label="Помощь">?</button>
+</aside>
+<main>
+ <header class="topbar">
+  <div class="brandline"><strong>IVAN STUDIO</strong><span>/ creator workspace</span></div>
+  <span class="pill">PERSONAL EDITION · v1.0.0</span>
+ </header>
+
+ <section class="page active" id="page-home">
+  <div class="hero">
+   <div class="eyebrow">Твоя творческая мастерская</div>
+   <h1>Добро пожаловать<br>в IVAN STUDIO.</h1>
+   <p>Пространство для сценариев и озвучки. Пиши, проверяй текст, настраивай голос и сохраняй свои проекты в одном месте.</p>
+   <div class="hero-actions"><button class="btn primary" data-go="voice">＋ Новая озвучка</button><button class="btn ghost" data-go="history">Открыть проекты</button></div>
+  </div>
+  <div class="cards">
+   <article class="card"><div class="ico">♫</div><h3>Озвучка сценариев</h3><p>Вставляй текст, добавляй паузы и слушай результат доступным голосом.</p></article>
+   <article class="card"><div class="ico">⌁</div><h3>Работа с текстом</h3><p>Проверяй команды, считай слова и готовь сценарий к записи.</p></article>
+   <article class="card"><div class="ico">▣</div><h3>Твои проекты</h3><p>Сохраняй сценарии локально в этом браузере и возвращайся к ним позже.</p></article>
+  </div>
+  <div class="section-head"><h2>Быстрый старт</h2><span class="muted small">3 шага</span></div>
+  <div class="panel small muted">01 — Открой «Озвучка». &nbsp; 02 — Вставь сценарий. &nbsp; 03 — Выбери доступный голос и нажми «Озвучить».</div>
+  <footer>Создано Эльдаром Абрамовым</footer>
+ </section>
+
+ <section class="page" id="page-voice">
+  <div class="eyebrow">VOICE WORKSPACE</div><h1>Озвучка</h1><p class="muted">Подготовь сценарий и запусти синтез речи на своём устройстве.</p>
+  <div class="editor-grid">
+   <section class="panel">
+    <h2>Текст сценария</h2><p class="muted small">Поддерживаются метки эмоций и пауз. Эмоциональные метки пока используются как разметка.</p>
+    <textarea id="script" spellcheck="false" placeholder="[serious] Вставь сюда свой сценарий..."></textarea>
+    <div class="row">
+     <button class="btn primary" id="play">▶ Озвучить</button><button class="btn" id="stop">■ Стоп</button><button class="btn" id="check">Проверить</button><button class="btn" id="clear">Очистить</button>
+    </div>
+    <div class="stats"><div class="stat"><b id="chars">0</b><span>СИМВОЛОВ</span></div><div class="stat"><b id="words">0</b><span>СЛОВ</span></div><div class="stat"><b id="commands">0</b><span>КОМАНД</span></div></div>
+    <div class="status" id="status">Готово. Выбери голос и добавь текст.</div>
+   </section>
+   <aside class="panel">
+    <h2>Параметры голоса</h2>
+    <div class="field"><label for="voice">Голос устройства</label><select id="voice"><option>Загрузка голосов…</option></select></div>
+    <div class="field"><label for="rate">Скорость — <b id="rateVal">1.00×</b></label><input id="rate" type="range" min=".65" max="1.35" step=".05" value="1"></div>
+    <div class="field"><label for="pitch">Высота — <b id="pitchVal">1.00</b></label><input id="pitch" type="range" min=".7" max="1.3" step=".05" value="1"></div>
+    <div class="field"><label>Команды</label><div class="tags">
+     <span class="tag">[thoughtful]</span><span class="tag">[whispering]</span><span class="tag">[fearful]</span><span class="tag">[sad]</span><span class="tag">[crying]</span><span class="tag">[angry]</span><span class="tag">[dramatic]</span><span class="tag">[curious]</span><span class="tag">[serious]</span><span class="tag">[calm]</span><span class="tag">[excited]</span><span class="tag">[nervous]</span><span class="tag">[short pause]</span><span class="tag">[long pause]</span><span class="tag">[pause]</span><span class="tag">[breath]</span>
+    </div></div>
+    <h2>Проверка текста</h2><div class="output" id="output">Результат проверки появится здесь.</div>
+    <div class="row"><button class="btn" id="copy">Копировать</button><button class="btn" id="download">Скачать TXT</button><button class="btn" id="save">Сохранить проект</button></div>
+    <div class="notice">Важно: используется встроенная озвучка браузера. Это бесплатно, но голос Ivan из библиотеки ElevenLabs здесь пока не подключён.</div>
+   </aside>
+  </div>
+ </section>
+
+ <section class="page" id="page-history">
+  <div class="eyebrow">YOUR LIBRARY</div><h1>История проектов</h1><p class="muted">Сохранённые сценарии на этом устройстве.</p>
+  <div class="panel"><div class="section-head" style="margin:0 0 12px"><h2>Мои проекты</h2><button class="btn" id="refresh">Обновить</button></div><div class="history-list" id="historyList"><div class="empty">Пока нет сохранённых проектов.</div></div></div>
+ </section>
+
+ <section class="page" id="page-settings">
+  <div class="eyebrow">PREFERENCES</div><h1>Настройки</h1><p class="muted">Параметры приложения и хранения данных.</p>
+  <div class="panel">
+   <h2>Рабочее пространство</h2>
+   <div class="field"><label>Название приложения</label><div class="output">IVAN STUDIO</div></div>
+   <div class="field"><label>Версия</label><div class="output">1.0.0 — первая сборка</div></div>
+   <div class="field"><label>Хранение</label><div class="output">Локально в браузере (localStorage). Проекты не отправляются на сервер.</div></div>
+   <button class="btn danger" id="wipe">Удалить все сохранённые проекты</button>
+  </div>
+ </section>
+
+ <section class="page" id="page-help">
+  <div class="eyebrow">QUICK GUIDE</div><h1>Помощь</h1>
+  <div class="panel">
+   <h2>Как пользоваться</h2>
+   <p class="muted">Перейди в «Озвучка», вставь текст и выбери голос из списка. Нажми «Озвучить». Доступность голосов зависит от браузера, операционной системы и установленных языковых пакетов.</p>
+   <h2>Команды пауз</h2><p class="muted small">[short pause] — короткая пауза · [pause] — обычная · [long pause] — длинная · [breath] — небольшая пауза.</p>
+   <h2>Эмоциональные метки</h2><p class="muted">Метки вроде [fearful], [whispering] и [dramatic] сохраняются в разметке, но браузерный синтезатор не умеет надёжно воспроизводить заданные эмоции.</p>
+   <h2>Приватность</h2><p class="muted">Текст и проекты сохраняются в локальном хранилище браузера на этом устройстве.</p>
+  </div>
+ </section>
+ <footer>IVAN STUDIO · Сделано для работы над историями и роликами</footer>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const known=new Set(['thoughtful','whispering','fearful','sad','crying','angry','dramatic','curious','serious','calm','excited','nervous','short pause','long pause','pause','breath']);
+let voices=[];
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===name));if(name==='history')renderHistory()}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>showPage(b.dataset.go));
+function stats(){let t=$('script').value;$('chars').textContent=t.length;$('words').textContent=(t.trim().match(/\S+/g)||[]).length;$('commands').textContent=(t.match(/\[[^\]]+\]/g)||[]).length}
+function parse(){let t=$('script').value,tags=[...t.matchAll(/\[([^\]]+)\]/g)],unknown=tags.map(x=>x[1].trim()).filter(x=>!known.has(x.toLowerCase()));let clean=t.replace(/\[([^\]]+)\]/g,(m,x)=>known.has(x.trim().toLowerCase())?'':m).replace(/\s+/g,' ').trim();$('output').textContent='ТЕКСТ ДЛЯ ОЗВУЧКИ\n'+clean+'\n\nКОМАНДЫ: '+(tags.map(x=>'['+x[1]+']').join(', ')||'нет')+(unknown.length?'\n\nНЕИЗВЕСТНЫЕ КОМАНДЫ: '+unknown.join(', '):'\n\nОшибок в командах не найдено.');stats();$('status').textContent=unknown.length?'Найдены неизвестные команды.':'Проверка завершена.';return clean}
+function loadVoices(){if(!('speechSynthesis'in window))return;voices=speechSynthesis.getVoices();let sel=$('voice'),old=sel.value;sel.innerHTML='';let ru=voices.filter(v=>v.lang.toLowerCase().startsWith('ru')),list=ru.length?ru:voices;list.forEach(v=>{let o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=v.name+' ('+v.lang+')';sel.appendChild(o)});if(!list.length)sel.innerHTML='<option value="">Голоса не найдены</option>';else if(old)sel.value=old}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function speak(){if(!('speechSynthesis'in window)){$('status').textContent='Браузер не поддерживает встроенную озвучку.';return}let raw=$('script').value;if(!raw.trim()){$('status').textContent='Сначала добавь текст сценария.';return}speechSynthesis.cancel();let parts=raw.split(/(\[(?:short pause|long pause|pause|breath)\])/i);$('status').textContent='Озвучивание запущено. Эмоциональные теги пока не меняют интонацию.';for(let part of parts){if(speechSynthesis.paused)return;let m=part.match(/^\[([^\]]+)\]$/);if(m){let k=m[1].toLowerCase();await wait(k==='long pause'?850:k==='short pause'?350:500);continue}let text=part.replace(/\[[^\]]+\]/g,' ').trim();if(!text)continue;await new Promise(resolve=>{let u=new SpeechSynthesisUtterance(text),v=voices[Number($('voice').value)];if(v)u.voice=v;u.lang='ru-RU';u.rate=+$('rate').value;u.pitch=+$('pitch').value;u.onend=resolve;u.onerror=resolve;speechSynthesis.speak(u)})}}
+function getProjects(){try{return JSON.parse(localStorage.getItem('ivanStudioProjects')||'[]')}catch(e){return []}}
+function setProjects(p){localStorage.setItem('ivanStudioProjects',JSON.stringify(p))}
+function renderHistory(){let root=$('historyList'),p=getProjects();root.innerHTML='';if(!p.length){root.innerHTML='<div class="empty">Пока нет сохранённых проектов.</div>';return}p.forEach((x,i)=>{let d=document.createElement('div');d.className='history-item';let info=document.createElement('div'),b=document.createElement('strong'),s=document.createElement('small');b.textContent=x.name;s.textContent=x.date+' · '+x.text.length+' символов';info.append(b,s);let actions=document.createElement('div'),open=document.createElement('button'),del=document.createElement('button');open.className='btn';open.textContent='Открыть';open.onclick=()=>{$('script').value=x.text;stats();showPage('voice')};del.className='btn';del.textContent='Удалить';del.onclick=()=>{let a=getProjects();a.splice(i,1);setProjects(a);renderHistory()};actions.append(open,del);d.append(info,actions);root.append(d)})}
+$('script').addEventListener('input',stats);$('play').onclick=speak;$('stop').onclick=()=>{speechSynthesis.cancel();$('status').textContent='Озвучивание остановлено.'};$('check').onclick=parse;
+$('clear').onclick=()=>{$('script').value='';$('output').textContent='Результат проверки появится здесь.';stats();$('status').textContent='Поле очищено.'};
+$('rate').oninput=()=>$('rateVal').textContent=(+$('rate').value).toFixed(2)+'×';$('pitch').oninput=()=>$('pitchVal').textContent=(+$('pitch').value).toFixed(2);
+$('copy').onclick=async()=>{let t=parse();try{await navigator.clipboard.writeText(t);$('status').textContent='Текст скопирован.'}catch(e){$('status').textContent='Не удалось скопировать. Выдели текст вручную.'}};
+$('download').onclick=()=>{let blob=new Blob([parse()],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ivan-studio-script.txt';a.click();URL.revokeObjectURL(a.href)};
+$('save').onclick=()=>{let t=$('script').value.trim();if(!t){$('status').textContent='Нечего сохранять.';return}let p=getProjects();p.unshift({name:'Проект '+new Date().toLocaleString('ru-RU'),date:new Date().toLocaleString('ru-RU'),text:t});setProjects(p.slice(0,100));$('status').textContent='Проект сохранён на этом устройстве.'};
+$('refresh').onclick=renderHistory;$('wipe').onclick=()=>{if(confirm('Удалить все сохранённые проекты?')){localStorage.removeItem('ivanStudioProjects');renderHistory()}};
+$('script').value='[serious] Сегодня я расскажу одну необычную историю. [short pause] Всё началось поздним вечером, когда город уже почти уснул. [thoughtful] Но никто не знал, что произойдёт дальше.';
+stats();loadVoices();if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=loadVoices;
+</script>
+</body>
+</html>
